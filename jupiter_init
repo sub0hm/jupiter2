@@ -1,0 +1,36 @@
+#!/bin/sh
+# chkconfig: 123456 90 10
+# jupiter
+#
+workdir=/home/jupiter
+
+start() {
+    cd $workdir
+    /home/jupiter/jupiter.sh &
+    echo "Server started."
+}
+
+stop() {
+    pid=`ps -ef | grep 'jupiter' | awk '{ print $2 }'`
+    echo $pid
+    kill $pid
+    sleep 2
+    echo "Server killed."
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/tornado-tts {start|stop|restart}"
+    exit 1
+esac
+exit 0
