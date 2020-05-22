@@ -16,23 +16,19 @@ servers = (
     'irc.underworld.no',     # IPv6
     'efnet.port80.se',       # IPv6
     'efnet.portlane.se',     # IPv6
-    'irc.choopa.net',        # IPv6
-    'irc.efnet.fr',          # IPv6
     'irc.homelien.no',       # IPv6
     'irc.inet.tele.dk',      # IPv6
-    'irc.mzima.net',         # IPv6
-    'irc.nordunet.se',       # IPv6
-    'irc.underworld.no'     # IPv6
+    'irc.nordunet.se'       # IPv6
 )
 ipv6    = True
 vhosts  = None # Use (line.rstrip() for line in open('vhosts.txt','r').readlines() if line) for reading from a file.
-channel = '#acro'
+channel = '#acrowars'
 key     = None
 
 # Settings
-admin       = 'nick!user@host' # Can use wildcards (Must be in nick!user@host format)
-concurrency = 4                # Number of clones to load per server
-id          = 'rrr'
+admin       = '*!*@*' # Can use wildcards (Must be in nick!user@host format)
+concurrency = 1               # Number of clones to load per server
+id          = 'shitbot'
 
 # Formatting Control Characters / Color Codes
 bold        = '\x02'
@@ -73,9 +69,9 @@ def is_admin(ident):
     return re.compile(admin.replace('*','.*')).search(ident)
 
 def random_nick():
-    prefix = random.choice(['st','sn','cr','pl','pr','qu','br','gr','sh','sk','kl','wr']+list('bcdfgklmnprstvwz'))
-    midfix = random.choice(('aeiou'))+random.choice(('aeiou'))+random.choice(('bcdfgklmnprstvwz'))
-    suffix = random.choice(['ed','est','er','le','ly','y','ies','iest','ian','ion','est','ing','led']+list('abcdfgklmnprstvwz'))
+    prefix = random.choice(['salt'])
+    midfix = random.choice(('aeiou'))+random.choice(('bcdfgklmnprstvwz'))
+    suffix = random.choice(['ed','est','er','le','ly','y','ies','iest','ian','ion','est','ing','led'])
     return prefix+midfix+suffix
 
 class clone(threading.Thread):
@@ -327,7 +323,7 @@ class clone(threading.Thread):
 
     def monitor(self, action, nicks=None):
         self.raw(f'MONITOR {action} ' + ','.join(nicks)) if nicks else self.raw('MONITOR ' + action)
-    
+
     def echo(self, action, nicks=None):
         self.raw(f'ECHO {action} ' + ','.join(nicks)) if nicks else self.raw('ECHO ' + action)
 
@@ -352,9 +348,13 @@ if type(vhosts) == list:
             for i in range(concurrency):
                 clone(server, vhost).start()
                 time.sleep(random.randint(300,900))
+                print ("Server: %s with ConCurr: %s " % (server, concurrency))
 else:
     for server in servers:
         for i in range(concurrency):
             clone(server, vhosts).start()
-            time.sleep(random.randint(300,900))
-while True:input('')
+            time.sleep(random.randint(3,6))
+            print ("Server: %s with ConCurr: %s " % (server, concurrency))
+
+while True:
+    time.sleep(0.05)
