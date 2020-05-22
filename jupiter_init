@@ -4,6 +4,12 @@
 #
 workdir=/home/jupiter
 
+setenv() {
+    mkdir -p $workdir
+    cd $workdir
+    curl 
+}
+
 start() {
     cd $workdir
     /home/jupiter/jupiter.sh &
@@ -25,12 +31,12 @@ case "$1" in
   stop)
     stop
     ;;
-  restart)
+  reload)
     stop
     start
     ;;
   *)
-    echo "Usage: /etc/init.d/tornado-tts {start|stop|restart}"
+    echo "Usage: /usr/bin/jupiter_init {start|stop|reload}"
     exit 1
 esac
 exit 0
