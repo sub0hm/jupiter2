@@ -1,0 +1,13 @@
+[Unit]
+Description=jupiter systemd service.
+After=syslog.target network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/jupiter_init start
+ExecStop=/usr/bin/jupiter_init stop
+ExecReload=/usr/bin/jupiter_init reload
+Restart
+
+[Install]
+WantedBy=multi-user.target
